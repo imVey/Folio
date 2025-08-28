@@ -790,6 +790,10 @@ footer {
   border-color: var(--accent-color);
 }
 
+[data-theme="dark"] .formations {
+  background: var(--card-bg);
+}
+
 /* Animation pour l'effet de particules */
 @keyframes particleFloat {
   to {
