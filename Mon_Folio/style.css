@@ -809,3 +809,12 @@ footer {
     opacity: 0;
   }
 }
+#github {
+  width: 100px; /* largeur fixée */
+  height: auto; /* hauteur s’adapte automatiquement */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#github:hover {
+  transform: translateY(-5px);
+}
