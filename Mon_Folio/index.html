@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio - Développeur Web</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-container">
+        <div class="logo">Portfolio</div>
+        <ul class="nav-menu">
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#apropos">À propos</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#formations">Formations</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-controls">
+          <button
+            id="darkModeToggle"
+            class="dark-mode-toggle"
+            aria-label="Basculer le mode sombre"
+          >
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+          <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Menu Mobile avec effet cristal -->
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="#accueil" class="mobile-link">Accueil</a></li>
+        <li><a href="#apropos" class="mobile-link">À propos</a></li>
+        <li><a href="#services" class="mobile-link">Services</a></li>
+        <li><a href="#formations" class="mobile-link">Formations</a></li>
+        <li><a href="#contact" class="mobile-link">Contact</a></li>
+      </ul>
+      <button
+        id="darkModeToggleMobile"
+        class="dark-mode-toggle mobile-dark-toggle"
+      >
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+      </button>
+    </div>
+
+    <!-- Hero Section avec Parallaxe -->
+    <section id="accueil" class="hero">
+      <div class="parallax-bg"></div>
+      <div class="parallax-layer layer1"></div>
+      <div class="parallax-layer layer2"></div>
+      <div class="hero-content">
+        <h1>Développeur Web Full Stack</h1>
+        <p>
+          Je crée des expériences web modernes et performantes avec passion et
+          expertise technique
+        </p>
+        <a href="#apropos" class="btn-primary">Découvrir mon travail</a>
+      </div>
+    </section>
+
+    <!-- Section À propos -->
+    <section id="apropos" class="about">
+      <div class="container">
+        <h2 class="fade-in-up">À Propos de Moi</h2>
+        <div class="about-content fade-in-up">
+          <div class="about-text">
+            <p>
+              Bonjour ! Je suis un développeur web passionné avec plusieurs
+              années d'expérience dans la création d'applications web modernes
+              et responsive. Ma mission est de transformer vos idées en
+              solutions digitales innovantes.
+            </p>
+
+            <p>
+              Je maîtrise les technologies front-end et back-end, ce qui me
+              permet de concevoir des expériences utilisateur complètes, de la
+              conception à la mise en production. Mon approche combine
+              créativité, performance technique et attention aux détails.
+            </p>
+
+            <p>
+              Toujours à l'affût des dernières tendances technologiques, je
+              m'efforce de créer des sites web qui non seulement impressionnent
+              visuellement, mais offrent également une expérience utilisateur
+              exceptionnelle.
+            </p>
+          </div>
+          <div class="about-image">
+            <div class="profile-img">👨‍💻</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Services -->
+    <section id="services">
+      <div class="container">
+        <h2 class="fade-in-up">Services Proposés</h2>
+        <div class="services-grid fade-in-up">
+          <div class="service-card">
+            <div class="service-icon">🎨</div>
+            <h3>Développement Frontend</h3>
+            <p>
+              Création d'interfaces utilisateur modernes et responsive avec
+              HTML5, CSS3, JavaScript, React, Vue.js. Design adaptatif pour tous
+              les appareils.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">⚙️</div>
+            <h3>Développement Backend</h3>
+            <p>
+              Développement d'APIs robustes et sécurisées avec Node.js, PHP,
+              Python. Gestion de bases de données MySQL, MongoDB, PostgreSQL.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">🚀</div>
+            <h3>Applications Web Complètes</h3>
+            <p>
+              Développement full-stack d'applications web complexes, e-commerce,
+              systèmes de gestion, plateformes collaboratives.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">📱</div>
+            <h3>Design Responsive</h3>
+            <p>
+              Création d'expériences utilisateur optimisées pour mobile,
+              tablette et desktop. Interface intuitive et performante.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">🔧</div>
+            <h3>Maintenance & Optimisation</h3>
+            <p>
+              Maintenance technique, optimisation des performances, mises à jour
+              sécuritaires et amélioration continue de vos applications.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">💡</div>
+            <h3>Conseil & Formation</h3>
+            <p>
+              Conseil en architecture web, audit de code, formation aux bonnes
+              pratiques de développement et accompagnement technique.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Formations -->
+    <section id="formations" class="formations">
+      <div class="container">
+        <h2 class="fade-in-up">Mes Formations</h2>
+        <div class="formations-timeline fade-in-up">
+          <div class="formation-item">
+            <div class="formation-date">2023 - 2024</div>
+            <h3>Master Développement Web & Mobile</h3>
+            <p>
+              École Supérieure d'Informatique - Spécialisation en technologies
+              modernes, architecture microservices, développement mobile
+              hybride.
+            </p>
+          </div>
+
+          <div class="formation-item">
+            <div class="formation-date">2022</div>
+            <h3>Certification React.js Avancé</h3>
+            <p>
+              Formation intensive sur React.js, Redux, Next.js, hooks avancés,
+              optimisation des performances et bonnes pratiques de
+              développement.
+            </p>
+          </div>
+
+          <div class="formation-item">
+            <div class="formation-date">2021 - 2022</div>
+            <h3>Licence Informatique</h3>
+            <p>
+              Université - Fondamentaux de l'informatique, algorithmique,
+              structures de données, programmation orientée objet, bases de
+              données.
+            </p>
+          </div>
+
+          <div class="formation-item">
+            <div class="formation-date">2021</div>
+            <h3>Formation Full Stack JavaScript</h3>
+            <p>
+              Bootcamp intensif - Node.js, Express, MongoDB, JavaScript ES6+,
+              développement d'APIs REST, déploiement cloud.
+            </p>
+          </div>
+
+          <div class="formation-item">
+            <div class="formation-date">2020</div>
+            <h3>Certification Google Cloud Platform</h3>
+            <p>
+              Formation sur les services cloud, déploiement d'applications,
+              gestion des bases de données cloud, sécurité et monitoring.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2 class="fade-in-up">Contactez-Moi</h2>
+        <div class="contact-content fade-in-up">
+          <div class="contact-form">
+            <form id="contactForm">
+              <div class="form-group">
+                <label for="name">Nom complet</label>
+                <input type="text" id="name" name="name" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="subject">Sujet</label>
+                <input type="text" id="subject" name="subject" required />
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit">
+                Envoyer le Message
+              </button>
+            </form>
+          </div>
+
+          <div class="contact-info">
+            <h3>Informations de Contact</h3>
+            <div class="contact-item">Email : contact@monportfolio.fr</div>
+            <div class="contact-item">Téléphone : +33 1 23 45 67 89</div>
+            <div class="contact-item">LinkedIn : /in/mon-profil-linkedin</div>
+            <div class="contact-item">GitHub : /mon-github</div>
+            <div class="contact-item">Localisation : Paris, France</div>
+
+            <h3 style="margin-top: 2rem">Disponibilité</h3>
+            <p>
+              Je suis actuellement disponible pour de nouveaux projets.
+              N'hésitez pas à me contacter pour discuter de vos besoins en
+              développement web.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        &copy; 2024 Portfolio Développeur Web. Créé avec passion et expertise
+        technique.
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
