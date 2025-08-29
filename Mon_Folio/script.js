@@ -9,6 +9,19 @@ if (savedTheme === "dark") {
   body.setAttribute("data-theme", "dark");
 }
 
+// Fonction pour mettre à jour l'icône LinkedIn
+function updateLinkedInIcon() {
+  const currentTheme = body.getAttribute("data-theme") || "light";
+  const linkedinImg = document.getElementById("LinkedIn");
+
+  if (linkedinImg) {
+    linkedinImg.src =
+      currentTheme === "dark"
+        ? "../Mon_Folio/Public/InBug-White.png"
+        : "../Mon_Folio/Public/LI-In-Bug.png";
+  }
+}
+
 // Fonction pour basculer le thème
 function toggleDarkMode() {
   const currentTheme = body.getAttribute("data-theme");
@@ -19,6 +32,9 @@ function toggleDarkMode() {
 
   // Mise à jour de la navbar selon le thème
   updateNavbarForTheme(newTheme);
+
+  // Mise à jour de l'icône LinkedIn
+  updateLinkedInIcon();
 }
 
 // Mettre à jour la navbar selon le thème
@@ -177,6 +193,9 @@ function typeWriter() {
 window.addEventListener("load", () => {
   heroTitle.textContent = "";
   setTimeout(typeWriter, 1000);
+
+  // Mettre à jour l'icône LinkedIn au chargement
+  updateLinkedInIcon();
 });
 
 // Navbar transparente au scroll avec support dark mode

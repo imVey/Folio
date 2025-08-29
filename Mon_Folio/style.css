@@ -818,3 +818,14 @@ footer {
 #github:hover {
   transform: translateY(-5px);
 }
+
+#LinkedIn {
+  width: 40px; /* largeur fixée */
+  height: auto; /* hauteur s’adapte automatiquement */
+  transition: transform 0.3s, box-shadow 0.3s;
+  padding-bottom: 25%;
+}
+
+#LinkedIn:hover {
+  transform: translateY(-5px);
+}
