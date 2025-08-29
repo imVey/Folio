@@ -250,208 +250,292 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Fonctionnalités du carousel de projets
+// Carrousel horizontal simple - 3 cartes côte à côte avec navigation infinie
 document.addEventListener("DOMContentLoaded", function () {
-  let currentSlide = 0;
-  const projects = document.querySelectorAll(".project-card");
+  let currentIndex = 0;
+  const originalProjects = document.querySelectorAll(".project-card");
   const indicators = document.querySelectorAll(".indicator");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
   const projectsWrapper = document.querySelector(".projects-wrapper");
 
-  // URLs des projets (à personnaliser selon vos projets réels)
-  const projectUrls = [
-    "projet1.html", // E-commerce Modern
-    "projet2.html", // Dashboard Analytics
-    "projet3.html", // Application Mobile
-    "projet4.html", // Web App Collaborative
-    "projet5.html", // Portfolio Interactif
-  ];
+  if (!projectsWrapper || originalProjects.length === 0) {
+    console.error("Éléments du carrousel non trouvés");
+    return;
+  }
 
-  function updateCarousel() {
-    // Mettre à jour les cartes actives
-    projects.forEach((card, index) => {
-      card.classList.remove("active");
-      // Masquer toutes les cartes d'abord
-      card.style.display = "none";
+  const totalProjects = originalProjects.length;
+  let projects = [];
+  let isTransitioning = false;
 
-      if (index === currentSlide) {
-        card.classList.add("active");
-      }
+  // Configuration pour le défilement par groupe de 3
+  const cardsPerView = 3;
+  const cardWidth = 100 / cardsPerView; // Pourcentage par carte
+
+  // Créer le carrousel infini avec clones
+  function createInfiniteCarousel() {
+    projectsWrapper.innerHTML = "";
+    const allProjects = [];
+
+    // Cloner toutes les cartes pour créer un effet infini fluide
+    // Ajouter les cartes à la fin au début (pour le défilement vers la gauche)
+    for (let i = 0; i < totalProjects; i++) {
+      const clone = originalProjects[i].cloneNode(true);
+      clone.classList.add("clone", "clone-start");
+      allProjects.push(clone);
+    }
+
+    // Ajouter les cartes originales
+    originalProjects.forEach((project) => {
+      allProjects.push(project);
     });
 
-    // Afficher seulement 3 cartes : précédente, actuelle, suivante
-    const prevIndex = (currentSlide - 1 + projects.length) % projects.length;
-    const nextIndex = (currentSlide + 1) % projects.length;
+    // Ajouter les cartes du début à la fin (pour le défilement vers la droite)
+    for (let i = 0; i < totalProjects; i++) {
+      const clone = originalProjects[i].cloneNode(true);
+      clone.classList.add("clone", "clone-end");
+      allProjects.push(clone);
+    }
 
-    // Afficher les 3 cartes visibles
-    projects[prevIndex].style.display = "block";
-    projects[currentSlide].style.display = "block";
-    projects[nextIndex].style.display = "block";
+    // Ajouter toutes les cartes au DOM
+    allProjects.forEach((project) => {
+      projectsWrapper.appendChild(project);
+    });
 
-    // Mettre à jour les indicateurs
+    projects = allProjects;
+
+    // Position initiale : démarrer sur les vraies cartes (après les premiers clones)
+    currentIndex = totalProjects;
+    updateCarousel(false);
+  }
+
+  function updateCarousel(withTransition = true) {
+    if (isTransitioning && withTransition) return;
+
+    if (withTransition) {
+      isTransitioning = true;
+      projectsWrapper.style.transition =
+        "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+    } else {
+      projectsWrapper.style.transition = "none";
+    }
+
+    // Calculer le déplacement (chaque groupe de 3 cartes)
+    const movePercentage = -(currentIndex * cardWidth);
+    projectsWrapper.style.transform = `translateX(${movePercentage}%)`;
+
+    // Mettre à jour les indicateurs basés sur l'index réel
+    const realIndex =
+      (((currentIndex - totalProjects) % totalProjects) + totalProjects) %
+      totalProjects;
     indicators.forEach((indicator, index) => {
-      indicator.classList.remove("active");
-      if (index === currentSlide) {
-        indicator.classList.add("active");
-      }
+      indicator.classList.toggle("active", index === realIndex);
     });
 
-    // Positionner les cartes : précédente à gauche, active au centre, suivante à droite
-    const cardWidth = 300;
-    const cardGap = 32;
-    const centerOffset = 0; // La carte active reste au centre
-
-    if (projectsWrapper) {
-      // Réorganiser l'ordre des cartes dans le DOM pour l'affichage
-      projectsWrapper.innerHTML = "";
-      projectsWrapper.appendChild(projects[prevIndex]);
-      projectsWrapper.appendChild(projects[currentSlide]);
-      projectsWrapper.appendChild(projects[nextIndex]);
-
-      // Centrer le groupe de 3 cartes
-      projectsWrapper.style.transform = `translateX(${centerOffset}px)`;
+    if (withTransition) {
+      setTimeout(() => {
+        // Gérer les boucles infinies
+        if (currentIndex <= 0) {
+          // Si on est au début, revenir à la fin des vraies cartes
+          currentIndex = totalProjects;
+          updateCarousel(false);
+        } else if (currentIndex >= totalProjects * 2) {
+          // Si on est à la fin, revenir au début des vraies cartes
+          currentIndex = totalProjects;
+          updateCarousel(false);
+        }
+        isTransitioning = false;
+      }, 600);
     }
   }
 
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % projects.length;
+  function nextGroup() {
+    if (isTransitioning) return;
+    currentIndex++;
     updateCarousel();
   }
 
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + projects.length) % projects.length;
+  function prevGroup() {
+    if (isTransitioning) return;
+    currentIndex--;
+    updateCarousel();
+  }
+
+  function goToGroup(index) {
+    if (isTransitioning) return;
+    currentIndex = totalProjects + index;
     updateCarousel();
   }
 
   // Event listeners pour les boutons
   if (nextBtn) {
-    nextBtn.addEventListener("click", nextSlide);
+    nextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      nextGroup();
+    });
   }
 
   if (prevBtn) {
-    prevBtn.addEventListener("click", prevSlide);
+    prevBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      prevGroup();
+    });
   }
 
   // Event listeners pour les indicateurs
   indicators.forEach((indicator, index) => {
-    indicator.addEventListener("click", () => {
-      currentSlide = index;
-      updateCarousel();
+    indicator.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      goToGroup(index);
     });
   });
 
   // Navigation au clavier
   document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
     if (e.key === "ArrowLeft") {
-      prevSlide();
+      e.preventDefault();
+      prevGroup();
     } else if (e.key === "ArrowRight") {
-      nextSlide();
+      e.preventDefault();
+      nextGroup();
     }
   });
 
-  // Auto-play (optionnel - décommentez si vous voulez un défilement automatique)
+  // Gestion tactile pour mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let isDragging = false;
+
+  projectsWrapper.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.touches[0].clientX;
+      isDragging = true;
+    },
+    { passive: true }
+  );
+
+  projectsWrapper.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!isDragging) return;
+      // Permettre le scroll vertical mais prévenir le horizontal
+      const touchCurrentX = e.touches[0].clientX;
+      const diffX = Math.abs(touchCurrentX - touchStartX);
+      if (diffX > 10) {
+        e.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+
+  projectsWrapper.addEventListener(
+    "touchend",
+    (e) => {
+      if (!isDragging) return;
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+      isDragging = false;
+    },
+    { passive: true }
+  );
+
+  function handleSwipe() {
+    const swipeThreshold = 80;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        nextGroup(); // Swipe gauche = suivant
+      } else {
+        prevGroup(); // Swipe droite = précédent
+      }
+    }
+  }
+
+  // Auto-play optionnel (décommentez pour activer)
   /*
-    setInterval(() => {
-        nextSlide();
-    }, 5000); // Change toutes les 5 secondes
-    */
-
-  // Gestion du clic sur les cartes pour redirection
-  projects.forEach((card, index) => {
-    card.addEventListener("click", () => {
-      // Ajouter effet de clic
-      card.style.transform = card.classList.contains("active")
-        ? "scale(0.95) translateY(-10px)"
-        : "scale(0.75) translateY(-10px)";
-
-      setTimeout(() => {
-        card.style.transform = "";
-      }, 150);
-
-      // Redirection après un court délai pour l'animation
-      setTimeout(() => {
-        window.open(projectUrls[index], "_blank");
-      }, 200);
-    });
-  });
-
-  // Gestion du survol des cartes
-  projects.forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      if (!card.classList.contains("active")) {
-        card.style.transform = "scale(0.85) translateY(-10px)";
+  let autoPlayInterval;
+  const autoPlayDelay = 5000;
+  
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(() => {
+      if (!isTransitioning) {
+        nextGroup();
       }
-    });
-
-    card.addEventListener("mouseleave", () => {
-      if (!card.classList.contains("active")) {
-        card.style.transform = "scale(0.8)";
-      }
-    });
+    }, autoPlayDelay);
+  }
+  
+  function stopAutoPlay() {
+    clearInterval(autoPlayInterval);
+  }
+  
+  // Pause auto-play au survol
+  projectsWrapper.addEventListener("mouseenter", stopAutoPlay);
+  projectsWrapper.addEventListener("mouseleave", startAutoPlay);
+  
+  // Pause auto-play pendant l'interaction tactile
+  projectsWrapper.addEventListener("touchstart", stopAutoPlay);
+  projectsWrapper.addEventListener("touchend", () => {
+    setTimeout(startAutoPlay, 3000); // Reprendre après 3s
   });
+  
+  startAutoPlay();
+  */
 
-  // Initialiser le carousel
-  updateCarousel();
-
-  // Gestion du responsive - recalculer les positions lors du redimensionnement
+  // Gestion du responsive
   let resizeTimeout;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      updateCarousel();
-    }, 250);
+      updateCarousel(false);
+    }, 200);
   });
 
-  // Animation d'entrée progressive des cartes
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const cards = entry.target.querySelectorAll(".project-card");
-        cards.forEach((card, index) => {
-          setTimeout(() => {
-            card.style.opacity = "1";
-            card.style.transform =
-              index === currentSlide ? "scale(1)" : "scale(0.8)";
-          }, index * 100);
-        });
-        observer.unobserve(entry.target);
-      }
-    });
-  });
+  // Initialisation
+  createInfiniteCarousel();
+
+  // Animation d'entrée
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = projectsWrapper.querySelectorAll(".project-card");
+          cards.forEach((card, index) => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(30px)";
+            setTimeout(() => {
+              card.style.opacity = "1";
+              card.style.transform = "translateY(0)";
+              card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            }, index * 100);
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
 
   const projectsSection = document.querySelector(".projects-carousel");
   if (projectsSection) {
     observer.observe(projectsSection);
   }
 
-  // Gestion du touch/swipe sur mobile
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  if (projectsWrapper) {
-    projectsWrapper.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
-    projectsWrapper.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    });
-  }
-
-  function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
-
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        // Swipe gauche - slide suivant
-        nextSlide();
-      } else {
-        // Swipe droite - slide précédent
-        prevSlide();
-      }
-    }
-  }
+  // Fonction pour déboguer (développement uniquement)
+  window.carouselDebug = {
+    currentIndex: () => currentIndex,
+    totalProjects: () => totalProjects,
+    realIndex: () =>
+      (((currentIndex - totalProjects) % totalProjects) + totalProjects) %
+      totalProjects,
+    next: nextGroup,
+    prev: prevGroup,
+    goto: goToGroup,
+  };
 });
