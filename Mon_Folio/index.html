@@ -17,6 +17,7 @@
           <li><a href="#apropos">À propos</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#formations">Formations</a></li>
+          <li><a href="#projets">Projets</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="nav-controls">
@@ -98,7 +99,13 @@
             </p>
           </div>
           <div class="about-image">
-            <div class="profile-img">👨‍💻</div>
+            <div class="profile-img">
+              <img
+                id="Moi"
+                src="../Mon_Folio/Public/Moi.png"
+                alt="Photo Marwan"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -218,6 +225,121 @@
               Formation sur les services cloud, déploiement d'applications,
               gestion des bases de données cloud, sécurité et monitoring.
             </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Projets -->
+    <section id="projets" class="projects">
+      <div class="container">
+        <h2 class="fade-in-up">Mes Projets</h2>
+        <div class="projects-carousel fade-in-up">
+          <div class="carousel-container">
+            <button class="carousel-btn prev-btn" id="prevBtn">‹</button>
+
+            <div class="projects-wrapper">
+              <div class="project-card active" data-project="1">
+                <div class="project-image">
+                  <img
+                    src="../Mon_Folio/Public/Moi.png"
+                    alt="Projet E-commerce"
+                  />
+                </div>
+                <div class="project-content">
+                  <h3>E-commerce Modern</h3>
+                  <p>
+                    Application e-commerce complète avec React.js et Node.js
+                  </p>
+                  <div class="project-tech">
+                    <span>React</span>
+                    <span>Node.js</span>
+                    <span>MongoDB</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-card" data-project="2">
+                <div class="project-image">
+                  <img
+                    src="../Mon_Folio/Public/Moi.png"
+                    alt="Projet Dashboard"
+                  />
+                </div>
+                <div class="project-content">
+                  <h3>Dashboard Analytics</h3>
+                  <p>
+                    Interface d'administration avec visualisation de données
+                  </p>
+                  <div class="project-tech">
+                    <span>Vue.js</span>
+                    <span>Chart.js</span>
+                    <span>Firebase</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-card" data-project="3">
+                <div class="project-image">
+                  <img
+                    src="../Mon_Folio/Public/Moi.png"
+                    alt="Projet Mobile App"
+                  />
+                </div>
+                <div class="project-content">
+                  <h3>Application Mobile</h3>
+                  <p>App mobile cross-platform avec React Native</p>
+                  <div class="project-tech">
+                    <span>React Native</span>
+                    <span>Redux</span>
+                    <span>API REST</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-card" data-project="4">
+                <div class="project-image">
+                  <img src="../Mon_Folio/Public/Moi.png" alt="Projet Web App" />
+                </div>
+                <div class="project-content">
+                  <h3>Web App Collaborative</h3>
+                  <p>Plateforme collaborative en temps réel</p>
+                  <div class="project-tech">
+                    <span>Next.js</span>
+                    <span>Socket.io</span>
+                    <span>PostgreSQL</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-card" data-project="5">
+                <div class="project-image">
+                  <img
+                    src="../Mon_Folio/Public/Moi.png"
+                    alt="Projet Portfolio"
+                  />
+                </div>
+                <div class="project-content">
+                  <h3>Portfolio Interactif</h3>
+                  <p>Site portfolio avec animations 3D et effets visuels</p>
+                  <div class="project-tech">
+                    <span>Three.js</span>
+                    <span>GSAP</span>
+                    <span>CSS3</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="carousel-btn next-btn" id="nextBtn">›</button>
+          </div>
+
+          <div class="carousel-indicators">
+            <button class="indicator active" data-slide="0"></button>
+            <button class="indicator" data-slide="1"></button>
+            <button class="indicator" data-slide="2"></button>
+            <button class="indicator" data-slide="3"></button>
+            <button class="indicator" data-slide="4"></button>
           </div>
         </div>
       </div>

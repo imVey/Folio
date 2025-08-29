@@ -249,3 +249,209 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Fonctionnalités du carousel de projets
+document.addEventListener("DOMContentLoaded", function () {
+  let currentSlide = 0;
+  const projects = document.querySelectorAll(".project-card");
+  const indicators = document.querySelectorAll(".indicator");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const projectsWrapper = document.querySelector(".projects-wrapper");
+
+  // URLs des projets (à personnaliser selon vos projets réels)
+  const projectUrls = [
+    "projet1.html", // E-commerce Modern
+    "projet2.html", // Dashboard Analytics
+    "projet3.html", // Application Mobile
+    "projet4.html", // Web App Collaborative
+    "projet5.html", // Portfolio Interactif
+  ];
+
+  function updateCarousel() {
+    // Mettre à jour les cartes actives
+    projects.forEach((card, index) => {
+      card.classList.remove("active");
+      // Masquer toutes les cartes d'abord
+      card.style.display = "none";
+
+      if (index === currentSlide) {
+        card.classList.add("active");
+      }
+    });
+
+    // Afficher seulement 3 cartes : précédente, actuelle, suivante
+    const prevIndex = (currentSlide - 1 + projects.length) % projects.length;
+    const nextIndex = (currentSlide + 1) % projects.length;
+
+    // Afficher les 3 cartes visibles
+    projects[prevIndex].style.display = "block";
+    projects[currentSlide].style.display = "block";
+    projects[nextIndex].style.display = "block";
+
+    // Mettre à jour les indicateurs
+    indicators.forEach((indicator, index) => {
+      indicator.classList.remove("active");
+      if (index === currentSlide) {
+        indicator.classList.add("active");
+      }
+    });
+
+    // Positionner les cartes : précédente à gauche, active au centre, suivante à droite
+    const cardWidth = 300;
+    const cardGap = 32;
+    const centerOffset = 0; // La carte active reste au centre
+
+    if (projectsWrapper) {
+      // Réorganiser l'ordre des cartes dans le DOM pour l'affichage
+      projectsWrapper.innerHTML = "";
+      projectsWrapper.appendChild(projects[prevIndex]);
+      projectsWrapper.appendChild(projects[currentSlide]);
+      projectsWrapper.appendChild(projects[nextIndex]);
+
+      // Centrer le groupe de 3 cartes
+      projectsWrapper.style.transform = `translateX(${centerOffset}px)`;
+    }
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % projects.length;
+    updateCarousel();
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + projects.length) % projects.length;
+    updateCarousel();
+  }
+
+  // Event listeners pour les boutons
+  if (nextBtn) {
+    nextBtn.addEventListener("click", nextSlide);
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", prevSlide);
+  }
+
+  // Event listeners pour les indicateurs
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener("click", () => {
+      currentSlide = index;
+      updateCarousel();
+    });
+  });
+
+  // Navigation au clavier
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      prevSlide();
+    } else if (e.key === "ArrowRight") {
+      nextSlide();
+    }
+  });
+
+  // Auto-play (optionnel - décommentez si vous voulez un défilement automatique)
+  /*
+    setInterval(() => {
+        nextSlide();
+    }, 5000); // Change toutes les 5 secondes
+    */
+
+  // Gestion du clic sur les cartes pour redirection
+  projects.forEach((card, index) => {
+    card.addEventListener("click", () => {
+      // Ajouter effet de clic
+      card.style.transform = card.classList.contains("active")
+        ? "scale(0.95) translateY(-10px)"
+        : "scale(0.75) translateY(-10px)";
+
+      setTimeout(() => {
+        card.style.transform = "";
+      }, 150);
+
+      // Redirection après un court délai pour l'animation
+      setTimeout(() => {
+        window.open(projectUrls[index], "_blank");
+      }, 200);
+    });
+  });
+
+  // Gestion du survol des cartes
+  projects.forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      if (!card.classList.contains("active")) {
+        card.style.transform = "scale(0.85) translateY(-10px)";
+      }
+    });
+
+    card.addEventListener("mouseleave", () => {
+      if (!card.classList.contains("active")) {
+        card.style.transform = "scale(0.8)";
+      }
+    });
+  });
+
+  // Initialiser le carousel
+  updateCarousel();
+
+  // Gestion du responsive - recalculer les positions lors du redimensionnement
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      updateCarousel();
+    }, 250);
+  });
+
+  // Animation d'entrée progressive des cartes
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const cards = entry.target.querySelectorAll(".project-card");
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.style.opacity = "1";
+            card.style.transform =
+              index === currentSlide ? "scale(1)" : "scale(0.8)";
+          }, index * 100);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+
+  const projectsSection = document.querySelector(".projects-carousel");
+  if (projectsSection) {
+    observer.observe(projectsSection);
+  }
+
+  // Gestion du touch/swipe sur mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  if (projectsWrapper) {
+    projectsWrapper.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    projectsWrapper.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+  }
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        // Swipe gauche - slide suivant
+        nextSlide();
+      } else {
+        // Swipe droite - slide précédent
+        prevSlide();
+      }
+    }
+  }
+});
