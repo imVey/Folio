@@ -17,8 +17,8 @@ function updateLinkedInIcon() {
   if (linkedinImg) {
     linkedinImg.src =
       currentTheme === "dark"
-        ? "../Mon_Folio/Public/InBug-White.png"
-        : "../Mon_Folio/Public/LI-In-Bug.png";
+        ? "Public/InBug-White.png"
+        : "Public/LI-In-Bug.png";
   }
 }
 
